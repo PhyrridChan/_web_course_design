@@ -34,3 +34,36 @@
 .ant-card-actions > li > span:hover {
     color: var(--theme-color);
 }
+
+.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    background: var(--theme-color);
+    border-color: var(--theme-color);
+}
+
+.ant-radio-button-wrapper-checked:not([class*=' ant-radio-button-wrapper-disabled']).ant-radio-button-wrapper:first-child {
+    border-right-color: var(--theme-color);
+}
+
+.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+    background: var(--theme-color);
+    border-color: var(--theme-color);
+    opacity: 0.85;
+}
+
+.ant-radio-button-wrapper {
+    color: var(--theme-color);
+
+}
+
+.ant-radio-button-wrapper:hover {
+    color: var(--theme-color);
+    opacity: 0.85;
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
+    background-color: var(--theme-color);
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover::before {
+    background-color: var(--theme-color);
+}

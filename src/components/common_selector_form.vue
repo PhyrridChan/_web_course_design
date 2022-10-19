@@ -38,6 +38,7 @@
             </a-select>
           </a-form-item>
         </a-col>
+        <slot name="main_selector"></slot>
       </a-row>
       <Transition name="fade">
         <a-row v-if="expand" class="inner-title">
@@ -62,6 +63,7 @@
             </a-col>
           </Transition>
         </template>
+        <slot name="more_selector"></slot>
       </a-row>
 
       <a-row v-if="!show_backupbtn">
