@@ -2,93 +2,29 @@
   <Whole_page_block :title="'课表查询'">
     <template v-slot:default>
       <div ref="header_line" class="header_line">
-        <div class="form-container">
-          <a-form>
-            <a-row :gutter="24">
-              <a-col :span="6">
-                <a-form-item has-feedback label="学年学期" name="semester">
-                  <a-select
-                      placeholder="请点击选择"
-                  >
-                    <a-select-option value="2022-2023-2">2022-2023-2</a-select-option>
-                    <a-select-option value="2022-2023-1">2022-2023-1</a-select-option>
-                    <a-select-option value="2021-2022-2">2021-2022-2</a-select-option>
-                    <a-select-option value="2021-2022-1">2021-2022-1</a-select-option>
-                    <a-select-option value="2020-2021-2">2020-2021-2</a-select-option>
-                    <a-select-option value="2020-2021-1">2020-2021-1</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col :span="12">
-                <a-form-item has-feedback label="院系专业" name="major">
-                  <a-cascader
-                      :options="options.depart_major.data"
-                      :show-search="{ filter }"
-                      placeholder="请点击选择或输入以搜索"
-                  ></a-cascader>
-                </a-form-item>
-              </a-col>
-              <a-col :span="6">
-                <a-form-item has-feedback label="年级" name="grade">
-                  <a-select
-                      placeholder="请点击选择"
-                  >
-                    <a-select-option value="2022">2022</a-select-option>
-                    <a-select-option value="2021">2021</a-select-option>
-                    <a-select-option value="2020">2020</a-select-option>
-                    <a-select-option value="2019">2019</a-select-option>
-                    <a-select-option value="2018">2018</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-            </a-row>
-            <Transition name="fade">
-              <a-row v-if="expand" class="inner-title">
-                <CommonTitle :title="'更多选项'"></CommonTitle>
-              </a-row>
-            </Transition>
-            <a-row :gutter="24">
-              <template v-for="(item, index) in more_selector" :key="index">
-                <Transition name="fade">
-                  <a-col v-if="expand" :span="item.span || 4" class="more_selector_col">
-                    <a-form-item has-feedback :label="item.plh" :name="item.name">
-                      <template v-if="item.type === 'input'">
-                        <a-input :placeholder="'请在此输入'" size="middle">
-                        </a-input>
-                      </template>
-                      <template v-else-if="item.type === 'selector'">
-                        <a-select size="middle"
-                                  :placeholder="'请点击选择'"
-                        ></a-select>
-                      </template>
-                    </a-form-item>
-                  </a-col>
-                </Transition>
-              </template>
-            </a-row>
-
-            <a-row>
-              <a-col :span="24" style="text-align: right;">
-                <a-button type="primary" html-type="submit">查询</a-button>
-                <a-button style="margin: 0 8px" @click="() => formRef.resetFields()">清除</a-button>
-                <a style="font-size: 12px; color: var(--theme-color)" @click="handle_expand">
-                  <template v-if="expand">
-                    隐藏更多
-                    <UpOutlined/>
-                  </template>
-                  <template v-else>
-                    显示更多
-                    <DownOutlined/>
-                  </template>
-                </a>
-              </a-col>
-            </a-row>
-
-          </a-form>
-        </div>
+        <Common_selector_form
+            :show_semester="true"
+            :show_grade="true"
+            :show_major="true"
+            :show_more="true"
+        ></Common_selector_form>
       </div>
       <div class="content-course_schedule" ref="main_sec">
-
+        <div class="course_schedule_toolbox inner-title" id="result">
+          <CommonTitle :title="'学期理论课表'"></CommonTitle>
+          <div class="toolbox_item">
+            <svg t="1666164820061" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                 xmlns="http://www.w3.org/2000/svg" p-id="2233" width="14" height="14">
+              <path
+                  d="M256 972.8H85.333333a34.133333 34.133333 0 0 1-34.133333-34.133333V768a34.133333 34.133333 0 0 1 68.266667 0v88.251733l197.7344-197.7344a34.133333 34.133333 0 1 1 48.247466 48.298667L167.7312 904.533333H256a34.133333 34.133333 0 0 1 0 68.266667z m682.666667-0.853333H768a34.133333 34.133333 0 0 1 0-68.266667h88.2688L658.5344 705.9456a34.133333 34.133333 0 1 1 48.264533-48.264533L904.533333 855.415467V768a34.133333 34.133333 0 0 1 68.266667 0v169.813333a34.304 34.304 0 0 1-9.6256 23.773867l-0.034133 0.034133-0.017067 0.017067-0.017067 0.017067-0.597333 0.6144h-0.017067l-0.017066 0.017066-0.034134 0.034134A33.8432 33.8432 0 0 1 938.666667 971.946667zM682.666667 375.466667a34.133333 34.133333 0 0 1-24.149334-58.248534L856.251733 119.466667H768a34.133333 34.133333 0 0 1 0-68.266667h170.871467A34.065067 34.065067 0 0 1 972.8 85.589333V256a34.133333 34.133333 0 0 1-68.266667 0V167.7312L706.816 365.4656A34.030933 34.030933 0 0 1 682.666667 375.466667z m-341.333334 0a33.962667 33.962667 0 0 1-24.132266-10.001067L119.466667 167.748267V256a34.133333 34.133333 0 0 1-68.266667 0V85.333333a34.167467 34.167467 0 0 1 9.5232-23.6544v-0.017066l0.938667-0.938667h0.017066A33.792 33.792 0 0 1 85.333333 51.2h170.666667a34.133333 34.133333 0 0 1 0 68.266667H167.748267l197.717333 197.7344A34.133333 34.133333 0 0 1 341.333333 375.466667zM597.333333 613.546667H426.666667a17.066667 17.066667 0 0 1-17.066667-17.066667v-170.666667a17.066667 17.066667 0 0 1 17.066667-17.066666h170.666666a17.066667 17.066667 0 0 1 17.066667 17.066666v170.666667a17.066667 17.066667 0 0 1-17.066667 17.066667z m-153.6-34.133334h136.533334v-136.533333h-136.533334v136.533333z"
+                  p-id="2234" fill="#2c2c2c"></path>
+            </svg>
+            <span class="toolbox_item_name">放大</span>
+          </div>
+        </div>
+        <div class="cs_container">
+          <Course_schecule_content></Course_schecule_content>
+        </div>
       </div>
     </template>
   </Whole_page_block>
@@ -96,133 +32,210 @@
 
 <script>
 import Whole_page_block from "@/components/whole_page_block";
-import {DownOutlined, UpOutlined} from '@ant-design/icons-vue';
-import {reactive, ref} from "vue";
 import CommonTitle from "@/components/common_title";
+import Course_schecule_content from "@/components/course_schecule_content";
+import Common_selector_form from "@/components/common_selector_form";
 
 export default {
   name: "class_schedule",
-  components: {CommonTitle, Whole_page_block, DownOutlined, UpOutlined,},
+  components: {Common_selector_form, Course_schecule_content, CommonTitle, Whole_page_block,},
   data() {
     return {
-      options: {
-        depart_major: {
-          data: [
-            {
-              label: '计算机与通信工程学院',
-              value: 'jitong',
-              children: [
-                {
-                  label: '数据科学与大数据技术',
-                  value: 'big_data',
-                },
-                {
-                  label: '计算机科学与技术',
-                  value: 'cs',
-                },
-                {
-                  label: '通信工程',
-                  value: 'telecom',
-                },
-                {
-                  label: '软件工程',
-                  value: 'sw',
-                }
-              ],
-            },
-            {
-              label: '交通运输工程学院',
-              value: 'jiaoyun',
-              children: [
-                {
-                  label: '道路桥梁与渡河工程',
-                  value: 'road_bridge',
-                },
-                {
-                  label: '交通运输类',
-                  value: 'trans',
-                },
-                {
-                  label: '测绘工程',
-                  value: 'cehui',
-                },
-                {
-                  label: '工程管理',
-                  value: 'proj_m',
-                }
-              ],
-            }
-          ]
-        }
-      },
-      more_selector: [
-        {
-          name: 'campus',
-          plh: '上课校区',
-          type: 'selector',
-          span: 5
-        },
-        {
-          name: 'class_room',
-          plh: '上课教室',
-          type: 'input',
-          span: 5
-        },
-        {
-          name: 'teacher',
-          plh: '授课老师',
-          type: 'input',
-          span: 5
-        },
-        {
-          name: 'id',
-          plh: '课程编号',
-          type: 'input',
-          span: 5
-        },
-        {
-          name: 'course_type',
-          plh: '课程类型',
-          type: 'selector',
-          span: 4
-        },
-        {
-          name: 'course_name',
-          plh: '课程名',
-          type: 'input',
-          span: 6
-        },
-      ],
-      expand: ref(false),
-      formRef: ref(),
-      formState: reactive({}),
     }
+  },
+  computed: {
+    courses() {
+      return [
+        [
+          {},
+          {},
+          {},
+          {},
+          {},
+        ],
+        [
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#037EF3'
+          },
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#0CB9C1'
+          },
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#00C16E'
+          },
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#037EF3'
+          },
+          {}
+        ],
+        [
+          {},
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#0CB9C1'
+          },
+          {},
+          {},
+          {},
+        ],
+        [
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#037EF3'
+          },
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#0CB9C1'
+          },
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#00C16E'
+          },
+          {},
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#037EF3'
+          },
+        ],
+        [
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#037EF3'
+          },
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#0CB9C1'
+          },
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#00C16E'
+          },
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#037EF3'
+          },
+          {},
+        ],
+        [
+          {},
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#0CB9C1'
+          },
+          {},
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#037EF3'
+          },
+          {},
+        ],
+        [
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#037EF3'
+          },
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#0CB9C1'
+          },
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#00C16E'
+          },
+          {
+            name: 'Spark编程基础',
+            site: '云综教C-505',
+            teacher: '刘文正',
+            course_id: '123456',
+            course_type: '必修',
+            color: '#037EF3'
+          },
+          {}
+        ],
+      ]
+    },
   },
   methods: {
-    filter: (inputValue, path) => {
-      return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
-    },
-    onFinish: function (values) {
-      console.log('Received values of form: ', values);
-      console.log('formState: ', this.formState);
-    },
-    handle_expand: function () {
-      this.expand = !this.expand
-      var that = this
-      setTimeout(
-          () => {
-            let header_height = (that.$refs.header_line?.clientHeight || 120)+ 20
-            that.$refs.main_sec?.style.setProperty('height', 'calc(100% - ' + header_height + 'px)')
-          }, 550
-      )
-    }
   },
   mounted() {
-    var that = this
     setTimeout(
         () => {
-          let header_height = (that.$refs.header_line?.clientHeight || 120)+ 20
-          that.$refs.main_sec?.style.setProperty('height', 'calc(100% - ' + header_height + 'px)')
         }, 1000
     )
   }
@@ -230,6 +243,11 @@ export default {
 </script>
 
 <style scoped>
+* >>> .block-main-content {
+  margin: 6px 0;
+  overflow: scroll;
+}
+
 .header_line {
   text-align: center;
   margin: 10px 0;
@@ -238,43 +256,63 @@ export default {
   justify-content: space-between;
 }
 
-.header_line .form-container {
-  width: 100%;
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 16px 10px;
-
-  text-align: left;
-}
-
-.more_selector_col >>> .ant-form-item {
-  margin: 6px 0;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-/*.inner-title >>> .title-content {*/
-/*  font-size: 16px;*/
-/*  font-family: "Alibaba PuHuiTi 2.0", serif;*/
-/*  font-weight: 500;*/
-/*}*/
-
 .content-course_schedule {
   background-color: #fff;
   width: 100%;
-  height: 100%;
+  padding-bottom: 12px;
+}
+
+.content-course_schedule >>> .course-content {
+  height: calc(100% - 42px);
+  margin: 5px 0;
 }
 
 .dynamic-section {
   transition: .5s all ease-in-out;
+}
+
+.course_schedule_toolbox {
+  padding: 12px 13px;
+  padding-bottom: 0;
+
+  position: relative;
+}
+
+.toolbox_item {
+  color: #666;
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+
+  cursor: pointer;
+
+  align-items: center;
+
+  width: max-content;
+  white-space: nowrap;
+  background-color: white;
+  border: solid 1px #999;
+  border-radius: 3px;
+  padding: 1px 6px;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.toolbox_item_name {
+  margin-left: 6px;
+}
+
+.course_schedule-title{
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  color: black;
+}
+
+.cs_container {
+  margin: 13px;
+  border-radius: 5px;
 }
 </style>

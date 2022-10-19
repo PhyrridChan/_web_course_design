@@ -25,6 +25,7 @@ import evaluate from "@/components/ee/evaluate";
 import complaint from "@/components/ee/complaint";
 import profile from "@/components/profile";
 import main_page from "@/views/main_page";
+import course_schecule_content from "@/components/course_schecule_content";
 
 const routes = [
     {
@@ -77,7 +78,8 @@ const routes = [
                 },
             ]
     },
-    {path: '/about_me', component: profile}
+    {path: '/about_me', component: profile},
+    {path: '/test', component: course_schecule_content}
 ]
 
 const router = createRouter({
