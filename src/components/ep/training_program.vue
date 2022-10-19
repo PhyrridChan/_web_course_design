@@ -479,6 +479,7 @@ export default {
 
 .content-table {
   height: calc(82% - 20px);
+  overflow: hidden;
   width: 100%;
   background-color: #fff;
   border-radius: 6px;

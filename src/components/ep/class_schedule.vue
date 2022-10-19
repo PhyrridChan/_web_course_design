@@ -246,6 +246,7 @@ export default {
 * >>> .block-main-content {
   margin: 6px 0;
   overflow: scroll;
+  overflow-x: hidden;
 }
 
 .header_line {

@@ -92,10 +92,12 @@
 <script>
 import {DownOutlined, UpOutlined} from '@ant-design/icons-vue';
 import {reactive, ref} from "vue";
+import CommonTitle from "@/components/common_title";
 
 export default {
   name: "common_selector_form",
   components: {
+    CommonTitle,
     DownOutlined, UpOutlined,
   },
   props: [

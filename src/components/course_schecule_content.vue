@@ -13,17 +13,28 @@
       <template v-else-if="column.dataIndex.startsWith('wk_day_')">
         <div class="item-block-container">
           <template v-for="(item, index) of text" :key="index">
-            <div :style="'--item-block-color:'.concat(item.color)+';'+
+            <a-tooltip placement="topRight">
+              <template #title>
+                 <span class="tooltiptext">
+                  <span><span class="tp-name">课程名：</span>{{ item.name }}</span>
+                  <span><span class="tp-name">课室：</span>{{ item.site }}</span>
+                  <span><span class="tp-name">授课老师：</span>{{ item.teacher }}</span>
+                  <span><span class="tp-name">课程编号：</span>{{ item.course_id }}</span>
+                  <span><span class="tp-name">课程类型：</span>{{ item.course_type }}</span>
+                </span>
+              </template>
+              <div :style="'--item-block-color:'.concat(item.color)+';'+
               'background-color:' +  item.color + '35;' +
                'border-left-color: '+item.color+ ';' +
                 'color:' + item.color"
-                 class="item-block">
-              <div class="ibib">
-                <span class="ib-name">{{ item.name }}</span>
-                <span class="ib-other">{{ item.site }}</span>
-                <span class="ib-other">{{ item.teacher }}</span>
+                   class="item-block">
+                <div class="ibib">
+                  <span class="ib-name">{{ item.name }}</span>
+                  <span class="ib-other">{{ item.site }}</span>
+                  <span class="ib-other">{{ item.teacher }}</span>
+                </div>
               </div>
-            </div>
+            </a-tooltip>
           </template>
         </div>
       </template>
@@ -237,6 +248,7 @@ export default {
           key: 'hd',
           width: 150,
           align: 'center',
+          fixed: 'left',
         },
       ]
       let wk_day_arr = [
@@ -532,5 +544,25 @@ td.content-item {
 * >>> .ant-table-cell:nth-child(1) {
   text-align: center;
   vertical-align: inherit;
+}
+
+.tooltiptext {
+  display: table;
+}
+
+.tooltiptext .tp-name {
+  color: #F5F5F5;
+  font-weight: 400;
+  display: table-cell;
+
+  white-space: nowrap;
+  line-break: strict;
+}
+
+.tooltiptext > span {
+  display: table-row;
+  max-width: initial;
+  text-align: left;
+  font-size: 15px;
 }
 </style>
