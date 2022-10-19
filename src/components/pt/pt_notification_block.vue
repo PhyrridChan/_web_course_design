@@ -104,6 +104,10 @@ export default {
 </script>
 
 <style scoped>
+*, *::before, *::after {
+  box-sizing: initial;
+}
+
 .notification_block_container {
   padding: 10px;
   width: calc(100% - 20px);

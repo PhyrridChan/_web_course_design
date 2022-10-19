@@ -130,6 +130,10 @@ export default {
 </script>
 
 <style scoped>
+*, *::before, *::after {
+  box-sizing: initial;
+}
+
 .course_block_container {
   padding: 10px 18px;
 }

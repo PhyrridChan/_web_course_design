@@ -3,7 +3,7 @@
     <CurrentPosition
         :positions="positions_"
     ></CurrentPosition>
-    <router-view style="width: 100%;height: calc(100% - 18px)"></router-view>
+    <router-view style="width: calc(100% - 30px);height: calc(100% - 50px)"></router-view>
   </div>
 </template>
 

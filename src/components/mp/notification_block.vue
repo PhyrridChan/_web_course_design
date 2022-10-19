@@ -109,6 +109,10 @@ export default {
 </script>
 
 <style scoped>
+*, *::before, *::after {
+  box-sizing: initial;
+}
+
 .title-block {
   padding: 10px;
   height: 22px;
