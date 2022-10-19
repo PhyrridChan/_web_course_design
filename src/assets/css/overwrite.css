@@ -30,3 +30,7 @@
     border-color: var(--theme-color);
     box-shadow: 0 0 4px 0 var(--theme-color);
 }
+
+.ant-card-actions > li > span:hover {
+    color: var(--theme-color);
+}
