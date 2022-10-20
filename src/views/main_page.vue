@@ -45,7 +45,6 @@ export default {
       this.nav_bar = data
     },
     nav_width_update: function (data) {
-      console.log(data)
       if (data === undefined) return
       this.nav_width = this.nav ? 250 : data
     },

@@ -28,7 +28,6 @@ export default {
   watch: {
     $route: {
       handler(route) {
-        console.log(route);
         this.positions_ = []
         this.positions_.push(this.page_root)
         this.nav_bar.forEach(v => {
