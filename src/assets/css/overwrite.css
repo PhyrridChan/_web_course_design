@@ -91,3 +91,20 @@
 .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover::before {
     background-color: var(--theme-color);
 }
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn,
+.ant-tabs-tab-btn:focus, .ant-tabs-tab-remove:focus, .ant-tabs-tab-btn:active, .ant-tabs-tab-remove:active {
+    color: var(--theme-color);
+    opacity: 1;
+}
+
+.ant-tabs-tab:hover {
+    color: var(--theme-color);
+    opacity: 0.85;
+}
+
+.ant-tabs-ink-bar {
+    position: absolute;
+    background: var(--theme-color);
+    pointer-events: none;
+}
