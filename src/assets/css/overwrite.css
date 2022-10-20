@@ -6,11 +6,19 @@
     justify-content: space-between;
 }
 
+
 .content-table {
     overflow: hidden;
     width: 100%;
     background-color: #fff;
     border-radius: 6px;
+}
+
+.content-table:deep(.ant-empty.ant-empty-normal) {
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    justify-content: center;
 }
 
 
