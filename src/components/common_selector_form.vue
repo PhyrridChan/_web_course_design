@@ -233,7 +233,7 @@ export default {
   text-align: left;
 }
 
-.more_selector_col >>> .ant-form-item {
+.more_selector_col:deep(.ant-form-item) {
   margin: 6px 0;
 }
 
@@ -248,7 +248,7 @@ export default {
   transform: translateY(-10px);
 }
 
-.inner-title >>> .title-content {
+.inner-title:deep(.title-content) {
   font-size: 16px;
   font-family: "Alibaba PuHuiTi 2.0", serif;
   font-weight: 500;

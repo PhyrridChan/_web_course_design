@@ -1,9 +1,11 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
 import router from "@/router";
 import Antd from 'ant-design-vue';
 
+import less from 'less';
+
 import 'ant-design-vue/dist/antd.css';
 import '@/assets/css/overwrite.css'
 
-createApp(App).use(Antd).use(router).mount('#app')
+createApp(App).use(less).use(Antd).use(router).mount('#app')

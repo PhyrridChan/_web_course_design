@@ -221,30 +221,20 @@ export default {
 
 <style scoped>
 .header_line {
-  text-align: center;
-  margin: 10px 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-
   height: 65px;
 }
 
-.header_line >>> .ant-form {
+.header_line:deep(.ant-form) {
   position: relative;
 }
 
-.header_line >>> .backupbtn {
+.header_line:deep(.backupbtn) {
   top: 0;
   right: 0;
 }
 
 .content-table {
   height: calc(100% - 65px - 20px);
-  overflow: hidden;
-  width: 100%;
-  background-color: #fff;
-  border-radius: 6px;
 }
 
 a {

@@ -30,7 +30,7 @@
             :columns="show_info_type.includes('all') ? columns : columns_reduced"
             :data-source="score_data"
             :pagination="false"
-            :scroll="show_info_type.includes('all') ? {x:1800 , y: table_content_height} :{y: table_content_height}"
+            :scroll="show_info_type.includes('all') ? {x:1800 , y: table_content_height} : {x:0, y: table_content_height}"
         >
           <template #bodyCell="{column, index}">
             <template v-if="column.key === 'row_num'">
@@ -492,8 +492,6 @@ export default {
         that.table_content_height = that.$refs["content-table"]?.clientHeight - 77
       })()
     }
-
-
     setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
   }
 }
@@ -501,29 +499,19 @@ export default {
 
 <style scoped>
 .header_line {
-  text-align: center;
-  margin: 10px 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-
   height: 88px;
 }
 
-.header_line >>> .ant-form {
+.header_line:deep(.ant-form) {
   position: relative;
 }
 
-.header_line >>> .backupbtn {
+.header_line:deep(.backupbtn) {
   top: 0;
   right: 0;
 }
 
 .content-table {
   height: calc(100% - 88px - 20px);
-  overflow: hidden;
-  width: 100%;
-  background-color: #fff;
-  border-radius: 6px;
 }
 </style>

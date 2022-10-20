@@ -373,12 +373,7 @@ export default {
 
 <style scoped>
 .header_line {
-  text-align: center;
-  margin: 10px 0;
-  width: 100%;
   height: 18%;
-  display: flex;
-  justify-content: space-between;
 }
 
 .credits_other-content {
@@ -479,10 +474,6 @@ export default {
 
 .content-table {
   height: calc(82% - 20px);
-  overflow: hidden;
-  width: 100%;
-  background-color: #fff;
-  border-radius: 6px;
 }
 
 .content-table >>> * td.ant-table-cell-fix-left-last {

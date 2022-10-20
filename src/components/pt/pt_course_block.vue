@@ -144,7 +144,7 @@ export default {
   justify-content: space-between;
 }
 
-.title-block >>> .btn {
+.title-block:deep(.btn) {
   background-color: #F3F4F7;
 }
 

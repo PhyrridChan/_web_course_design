@@ -94,13 +94,13 @@ export default {
   flex-direction: row;
 }
 
-* >>> .ant-card {
+*:deep(.ant-card) {
   margin-left: 1.3%;
   margin-bottom: 1.3%;
   width: 24.025%;
 }
 
-* >>> .ant-card:nth-child(4n+1) {
+*:deep(.ant-card:nth-child(4n+1)) {
   margin-left: 0;
 }
 </style>

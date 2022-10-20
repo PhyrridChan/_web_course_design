@@ -31,7 +31,7 @@ export default {
   height: 100%;
 }
 
-.block-content >>> .title_block {
+.block-content:deep(.title_block) {
   font-size: 18px;
 }
 

@@ -243,18 +243,14 @@ export default {
 </script>
 
 <style scoped>
-* >>> .block-main-content {
+*:deep(.block-main-content) {
   margin: 6px 0;
   overflow: scroll;
   overflow-x: hidden;
 }
 
 .header_line {
-  text-align: center;
-  margin: 10px 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
+
 }
 
 .content-course_schedule {
@@ -263,7 +259,7 @@ export default {
   padding-bottom: 12px;
 }
 
-.content-course_schedule >>> .course-content {
+.content-course_schedule:deep(.course-content) {
   height: calc(100% - 42px);
   margin: 5px 0;
 }

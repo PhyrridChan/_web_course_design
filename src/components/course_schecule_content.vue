@@ -536,12 +536,12 @@ td.content-item {
   font-weight: 400;
 }
 
-* >>> .ant-table-cell {
+*:deep(.ant-table-cell) {
   padding: .05em;
   vertical-align: top;
 }
 
-* >>> .ant-table-cell:nth-child(1) {
+*:deep(.ant-table-cell:nth-child(1)) {
   text-align: center;
   vertical-align: inherit;
 }
