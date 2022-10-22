@@ -25,7 +25,7 @@ import evaluate from "@/components/ee/evaluate";
 import complaint from "@/components/ee/complaint";
 import profile from "@/components/profile";
 import main_page from "@/views/main_page";
-import course_schecule_content from "@/components/course_schecule_content";
+import pra_credit from "@/components/pra/application-form/pra_credit";
 
 const routes = [
     {
@@ -79,7 +79,7 @@ const routes = [
             ]
     },
     {path: '/about_me', component: profile},
-    {path: '/test', component: course_schecule_content}
+    {path: '/test', component: pra_credit}
 ]
 
 const router = createRouter({

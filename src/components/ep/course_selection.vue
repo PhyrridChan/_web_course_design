@@ -79,28 +79,13 @@ export default {
 </script>
 
 <style scoped>
-.cs_filed_container {
-  background-color: white;
-  margin: 6px 0;
-  padding: 13px;
-  width: 100%;
-  height: 100%;
-  overflow: scroll;
-}
-
-.cs_filed {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-}
-
-*:deep(.ant-card) {
+.cs_filed:deep(.ant-card) {
   margin-left: 1.3%;
   margin-bottom: 1.3%;
   width: 24.025%;
 }
 
-*:deep(.ant-card:nth-child(4n+1)) {
+.cs_filed:deep(.ant-card:nth-child(4n+1)) {
   margin-left: 0;
 }
 </style>

@@ -28,26 +28,28 @@
         <table>
           <td class="content-item" v-for="(col, col_index) of courses" :key="col_index">
             <tr v-for="(item, index) of col" :key="index">
-              <div :style="'--item-block-color:'.concat(item.color)+';'+
-              'background-color:' +  item.color + '35;' +
-               'border-left-color: '+item.color+ ';' +
-                'color:' + item.color"
-                   class="item-block">
-                <div class="ibib">
-                  <span class="ib-name">{{ item.name }}</span>
-                  <span class="ib-other">{{ item.site }}</span>
-                  <span class="ib-other">{{ item.teacher }}</span>
-                </div>
-              </div>
-              <div v-if="item.course_id && wk !== 'all'" class="tooltiptext_container">
-                <span class="tooltiptext">
+                <a-tooltip placement="rightBottom">
+                  <template #title v-if="item.course_id && wk !== 'all'">
+                    <span class="tooltiptext">
                   <span><span class="tp-name">课程名：</span>{{ item.name }}</span>
                   <span><span class="tp-name">课室：</span>{{ item.site }}</span>
                   <span><span class="tp-name">授课老师：</span>{{ item.teacher }}</span>
                   <span><span class="tp-name">课程编号：</span>{{ item.course_id }}</span>
                   <span><span class="tp-name">课程类型：</span>{{ item.course_type }}</span>
-                </span>
-              </div>
+                    </span>
+                  </template>
+                  <div :style="'--item-block-color:'.concat(item.color)+';'+
+              'background-color:' +  item.color + '35;' +
+               'border-left-color: '+item.color+ ';' +
+                'color:' + item.color"
+                       class="item-block">
+                    <div class="ibib">
+                      <span class="ib-name">{{ item.name }}</span>
+                      <span class="ib-other">{{ item.site }}</span>
+                      <span class="ib-other">{{ item.teacher }}</span>
+                    </div>
+                  </div>
+                </a-tooltip>
             </tr>
           </td>
         </table>
@@ -302,6 +304,7 @@ td.content-item {
 
   white-space: nowrap;
   line-break: strict;
+  text-align: right;
 }
 
 .tooltiptext > span {

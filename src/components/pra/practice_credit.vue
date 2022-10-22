@@ -18,6 +18,9 @@
               <form-outlined/>
             </span>
           </template>
+          <template v-if="tab_value === 'application'">
+            <a-button type="primary" style="margin: 10px 0;" @click="this.visible = !this.visible">申报</a-button>
+          </template>
           <a-table
               :columns="tab_value === 'search' ? columns : apply_columns"
               :data-source="tab_value === 'search' ? pra_data : []"
@@ -36,17 +39,31 @@
       </div>
     </template>
   </Whole_page_block>
+  <a-drawer
+      v-model:visible="visible"
+      :width="600"
+      style="--theme-color: #E0A418"
+      placement="right"
+  >
+    <template #extra>
+      <a-button style="margin-right: 8px" @click="this.visible = !this.visible">取消</a-button>
+      <a-button type="primary" @click="this.visible = !this.visible">提交</a-button>
+    </template>
+    <Pra_credit></Pra_credit>
+  </a-drawer>
 </template>
 
 <script>
 import Whole_page_block from "@/components/whole_page_block";
 import {FormOutlined, FileSearchOutlined} from '@ant-design/icons-vue';
+import Pra_credit from "@/components/pra/application-form/pra_credit";
 
 export default {
   name: "practice_credit",
-  components: {Whole_page_block, FormOutlined, FileSearchOutlined},
+  components: {Pra_credit, Whole_page_block, FormOutlined, FileSearchOutlined},
   data() {
     return {
+      visible: false,
       tabList: [
         {
           key: 'search',

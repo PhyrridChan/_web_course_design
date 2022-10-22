@@ -31,7 +31,7 @@ export default {
         {path: '/pt', color: '#00C16E',},
         {path: '/ep', color: '#0CB9C1',},
         {path: '/em', color: '#F48924',},
-        {path: '/pra', color: '#FFC845',},
+        {path: '/pra', color: '#E0A418',},
         {path: '/ee', color: '#F85A40',}],
       nav_width: 250,
       nav: true

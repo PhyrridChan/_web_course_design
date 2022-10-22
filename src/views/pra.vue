@@ -1,6 +1,6 @@
 <template>
   <Common_view :nav_bar="nav_bar" :positions="positions" :page_root="page_root"
-               :theme="'#FFC845'"
+               :theme="'#e0a418'"
   ></Common_view>
 </template>
 
