@@ -4,7 +4,7 @@
       <CommonTitle :title="group.group_name" :more-btn="moreBtn"></CommonTitle>
     </div>
     <div class="group_field">
-      <div class="course_block" v-for="(item, index) in group.courses" :key="index">
+      <div class="course_block" v-for="(item, index) in group.courses" :key="index" @click="$nf.not_finish()">
         <div class="course_img_container">
           <img src="" alt="">
         </div>

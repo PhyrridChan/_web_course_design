@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div style="position:absolute; right: 10px; top: 10px; z-index: 999">
-      <router-link to="/about_me">ME</router-link>
-    </div>
     <CommonSide :theme="theme" :nav_bar="nav_bar" @navWidth="nav_width_update"></CommonSide>
     <main ref="main_content" class="main_content" :style="'width:' + 'calc(82% + 250px - ' + nav_width + 'px);'">
       <router-view v-slot="{ Component }">

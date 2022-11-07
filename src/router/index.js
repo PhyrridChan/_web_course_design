@@ -25,12 +25,15 @@ import evaluate from "@/components/ee/evaluate";
 import complaint from "@/components/ee/complaint";
 import profile from "@/components/profile";
 import main_page from "@/views/main_page";
-import pra_credit from "@/components/pra/application-form/pra_credit";
+import login from "@/views/login";
+
+import cookie from "@/assets/js/cookie";
+import {message} from "ant-design-vue";
 
 const routes = [
     {
         path: '/', component: main_page,
-        redirect: '/mp',
+        redirect: '/login',
         children:
             [
                 {path: '/mp', component: mp,},
@@ -79,13 +82,34 @@ const routes = [
             ]
     },
     {path: '/about_me', component: profile},
-    {path: '/test', component: pra_credit}
+    {path: '/login', component: login},
 ]
 
 const router = createRouter({
     history: createWebHistory(),
     routes,
 })
+
+router.beforeEach((to, from, next) => {
+    if (cookie.getCookie("login") === 'suc') {
+        if (to.path === "/login") {
+            message.info("已登录")
+            next({
+                path: '/mp'
+            })
+        } else {
+            next()
+        }
+    } else {
+        if (to.path === "/login") {
+            next()
+        } else {
+            message.warn("请先登录")
+            next('/login')
+        }
+    }
+})
+
 
 export default router
 

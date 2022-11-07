@@ -50,7 +50,7 @@
           </div>
           <div class="credits_other">
             <div class="credits_other-content">
-              <div class="credits_block">
+              <div class="credits_block" @click="$nf.not_finish()">
                 <div class="block_num _with_icon">
                   <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="8" y="4" width="32" height="40" rx="2" fill="#ffffff" stroke="#333" stroke-width="4"
@@ -68,7 +68,7 @@
                 <div class="block_title">培养目标</div>
               </div>
 
-              <div class="credits_block">
+              <div class="credits_block" @click="$nf.not_finish()">
                 <div class="block_num _with_icon">
                   <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path

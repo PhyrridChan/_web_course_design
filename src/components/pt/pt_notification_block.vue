@@ -12,7 +12,7 @@
         </label>
       </div>
       <div class="noti_block_contianer">
-        <div class="noti_block" v-for="(item, index) in noti_data[current].data" :key="index">
+        <div class="noti_block" v-for="(item, index) in noti_data[current].data" :key="index" @click="$nf.not_finish()">
           <div class="noti_info">
             <div class="noti_title">{{ item.title }}</div>
             <div class="noti_sub" v-for="(sub, s_index) in item.info" :key="s_index"><span>{{sub.name}}：</span><span>{{ sub.value }}</span></div>

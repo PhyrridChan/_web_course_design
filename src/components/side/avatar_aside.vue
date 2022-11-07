@@ -15,7 +15,7 @@
             </li>
           </ul>
         </div>
-        <div class="edit_info btn">
+        <div class="edit_info btn" @click="$nf.not_finish()">
           编辑个人信息
         </div>
       </div>

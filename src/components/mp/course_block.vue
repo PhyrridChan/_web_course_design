@@ -6,11 +6,11 @@
         ></CommonTitle>
 
         <div class="wktime-selector">
-          <span class="arrow pre-arrow"></span>
+          <span class="arrow pre-arrow" @click="$nf.not_finish()"></span>
           <span class="wk-time-content">
               {{ today }}
             </span>
-          <span class="arrow next-arrow"></span>
+          <span class="arrow next-arrow" @click="$nf.not_finish()"></span>
         </div>
       </div>
 

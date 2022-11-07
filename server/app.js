@@ -1,16 +1,25 @@
-var express = require('express');
-var app = express();
-var db = require('db/db')
+const userApi = require('./api/userApi');
+const todoApi = require('./api/todoApi');
 
-app.get('/', function (req, res) {
-    res.send('Hello The Fucking World');
-})
+const bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
 
-var server = app.listen(8081, function () {
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers', 'Authorization,X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method' )
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PATCH, PUT, DELETE')
+    res.header('Allow', 'GET, POST, PATCH, OPTIONS, PUT, DELETE')
+    next();
+});
 
-    var host = server.address().address
-    var port = server.address().port
-    db.connect()
-    console.log("应用实例，访问地址为 http://%s:%s", host, port)
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
-})
+// 后端api路由
+app.use('/api/user', userApi);
+app.use('/api/todo', todoApi)
+
+// 监听端口
+app.listen(3000);
+console.log('success listen at port:3000......');

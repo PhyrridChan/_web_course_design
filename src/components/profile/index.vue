@@ -166,13 +166,15 @@
             </div>
 
           </div>
-          <div class="press_btn btn_add_salary wow fadeInUp" data-wow-offset="120" data-wow-duration=".6s">
+          <div class="press_btn btn_add_salary wow fadeInUp" data-wow-offset="120" data-wow-duration=".6s"
+               ref="salary_btn">
             <button @click="addSalary">按我涨工资</button>
           </div>
-          <div class="press_btn btn_add_hair wow fadeInUp" data-wow-offset="120" data-wow-duration=".6s">
+          <div class="press_btn btn_add_hair wow fadeInUp" data-wow-offset="120" data-wow-duration=".6s" ref="hair_btn">
             <button @click="addHair">按我张头发</button>
+            <div class="bubble_msg">头发 +1</div>
           </div>
-          <div class="press_btn btn_rm_bug wow fadeInUp" data-wow-offset="120" data-wow-duration=".6s">
+          <div class="press_btn btn_rm_bug wow fadeInUp" data-wow-offset="120" data-wow-duration=".6s" ref="bug_btn">
             <button @click="rmBug">按我代码无Bug</button>
           </div>
         </div>
@@ -561,9 +563,10 @@
                 留言
               </div>
               <a-textarea
+                  v-model:value="msg"
                   style="height: 116px"
               ></a-textarea>
-              <div class="submit_btn">
+              <div class="submit_btn" @click="submitMsg">
                 提交
               </div>
             </div>
@@ -623,6 +626,8 @@
 
 <script>
 import WOW from "wow.js";
+import {message} from "ant-design-vue";
+import axios from "axios";
 
 export default {
   name: "my_profile",
@@ -630,27 +635,23 @@ export default {
     return {
       fromPath: '',
       salary: 3200000,
+      msg: '',
     }
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       console.log(from, 'from')
       vm.fromPath = from.path  //获取上一级路由的路径
-      if (
-          from.path === '/h5/indexOrderDetail' ||
-          from.path === '/h5/storeOrderDetail'
-      ) {
-        vm.headerRightText = ''
-        vm.showDefault = false
-
-        console.log(this.fromPath)
-      }
     })
   },
   methods: {
     back: function () {
-      if (this.fromPath === '/') this.$router.push('/')
-      else this.$router.go(-1)
+      this.$emit('resetEntrance', '')
+      if (this.fromPath === '/') {
+        this.$router.push('/')
+      } else {
+        this.$router.go(-1)
+      }
     },
     commonMoveHandler: function (father, selector, x_dist, y_dist) {
       const apply_method = v => {
@@ -679,12 +680,22 @@ export default {
     },
     addSalary: function () {
       this.salary += 100;
+      this.bubbleMessage('salary_btn', '工资 +¥1')
+    },
+    bubbleMessage: function (ref, msg) {
+      let dom = this.$refs[ref]
+      const msg_span = document.createElement('div')
+      msg_span.innerText = msg
+      msg_span.classList.add('bubble_msg')
+      dom.appendChild(msg_span)
+      console.log(dom)
+      setTimeout(() => msg_span.remove(), 3000)
     },
     addHair: function () {
-
+      this.bubbleMessage('hair_btn', '头发 +1')
     },
     rmBug: function () {
-
+      this.bubbleMessage('bug_btn', 'Bug -1')
     },
     moneyFormater: function (val) {
       let str = (val / 100).toFixed(2) + '';
@@ -692,6 +703,19 @@ export default {
       let dot = str.substring(str.length, str.indexOf("."))//取到小数部分搜索
       let ret = intSum + dot;
       return ret
+    },
+    submitMsg: function () {
+      if (this.msg.length <= 0) {
+        message.error('空的留言，提交什么啊🤬🤬');
+        return
+      }
+      let url = 'https://api.day.app/ZCs6nE83mAH4yLjn7YriUL/个人主页留言/' + this.msg;
+      axios.get(url).then(
+          () => {
+            message.success('提交啦（虽然也不一定会看🤪）');
+          }, () => {
+            message.error('oops，没提交得上，怪不得我吧');
+          });
     }
   },
   mounted() {
@@ -700,7 +724,7 @@ export default {
     let i = 1
     titleToBigger.querySelectorAll('div').forEach(
         v => {
-          v.style = 'transform: scale(' + i + ')'
+          v.style = `transform: scale(${i})`
           i = i * 1.1
         }
     )
@@ -1384,6 +1408,30 @@ export default {
 
     .press_btn.btn_rm_bug {
       left: 60%;
+    }
+
+    .press_btn:deep(.bubble_msg) {
+      z-index: 999;
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 18px;
+
+      animation: bubble_msg 3s cubic-bezier(0.35, 0.03, 0, 0.98) forwards;
+    }
+
+    @keyframes bubble_msg {
+      from {
+        opacity: 1;
+      }
+      70% {
+        opacity: 0.2;
+        top: -120px;
+      }
+      to {
+        opacity: 0;
+        top: -130px;
+      }
     }
 
     .deco_sticky_smile {

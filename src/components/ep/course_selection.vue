@@ -5,6 +5,7 @@
         <div class="cs_filed">
           <template v-for="(item, index) of cs_card_info.data" :key="index">
             <a-card
+                @click="$nf.not_finish()"
                 hoverable
                 size="small"
                 :title="item.title">

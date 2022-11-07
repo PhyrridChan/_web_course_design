@@ -9,12 +9,12 @@
           <div class="child-title-block">
             <div class="child-title"><span>公告栏</span>
               <span class="more-info">{{ bulletin.unread }}条未读</span></div>
-            <div class="read_more">查看更多</div>
+            <div class="read_more" @click="$nf.not_finish()">查看更多</div>
           </div>
           <div class="child-content-block">
             <div class="messages-container">
               <div class="message" v-for="(item, index) in bulletin.info" :key="index">
-                <div class="tp_info">
+                <div class="tp_info" @click="$nf.not_finish()">
                   <div :class="['topic', item.unread ? 'unread' : '']">{{ item.topic }}</div>
                   <div class="tp-more info" v-if="item.unread">
                     <span>未读</span>
@@ -35,7 +35,7 @@
           <div class="child-content-block">
             <div class="emails-container">
               <div class="email" v-for="(item, index) in emails.info" :key="index">
-                <div>
+                <div @click="$nf.not_finish()">
                   <div class="email-logo">
                     <img :src="item.logo" :alt="item.name">
                   </div>
@@ -46,7 +46,7 @@
               </div>
             </div>
           </div>
-          <div class="read_more">查看全部</div>
+          <div class="read_more" @click="$nf.not_finish()">查看全部</div>
         </div>
       </div>
     </template>

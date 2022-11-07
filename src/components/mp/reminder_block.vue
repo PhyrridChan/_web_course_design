@@ -8,18 +8,20 @@
       <div class="rem-content">
         <div class="time-selector">
           <div class="wktime-selector">
-            <span class="arrow pre-arrow"></span>
+            <span class="arrow pre-arrow" @click="$nf.not_finish()"></span>
             <span class="wk-time-content">
               {{ today }}
             </span>
-            <span class="arrow next-arrow"></span>
+            <span class="arrow next-arrow" @click="$nf.not_finish()"></span>
           </div>
           <div class="daytime-selector">
             <div class="wkday-name">
               <div class="wkday" v-for="(item, index) in ['日','一','二','三','四','五','六']" :key="item">
                 <div class="wk-name">{{ item }}</div>
                 <div
-                    :class="['day-num', wkdays[index] === today_num ? 'today' : '', to_do_nun.includes(wkdays[index]) ? 'to-do' : '']">
+                    :class="['day-num', wkdays[index] === today_num ? 'today' : '', to_do_num.includes(wkdays[index]) ? 'to-do' : '']"
+                    @click="reset_day(wkdays[index])"
+                >
                   {{ wkdays[index] }}
                 </div>
               </div>
@@ -28,18 +30,23 @@
         </div>
         <div class="reminder-list">
           <div class="reminder-group" v-for="(rem_group, g_index) of reminder" :key="g_index"
-               :style="'--group-theme-color:' + rem_group.theme_color">
+               :style="'--group-theme-color:' + rem_group.theme_color" :ref="rem_group.name"
+               :data-ginfo="JSON.stringify(rem_group)">
             <div class="reminder-g-title-container">
-              <div class="reminder-g-name">{{ rem_group.name }}</div>
-              <div class="reminder-g-count">{{ rem_group.list.length }}</div>
+              <div class="reminder-g-name">{{ rem_group.group_name }}</div>
+              <div class="reminder-g-count">{{ rem_group.list.length - 1 }}</div>
             </div>
             <div class="reminder-g-items-container">
               <div class="rg-item" v-for="(item, index) of rem_group.list" :key="index">
-                <label>
-                  <input type="checkbox">
+                <label v-if="item.status !== -1 && item.time_begin !== -1 && today_num >= item.time_begin && today_num <= item.time_end"
+                       @click.prevent="update_state(item, $event)">
+                  <input type="checkbox" :checked="item.status">
                   <div class="cus-checkbox"></div>
                   <div class="rg-item-content">
-                    {{ item.title }}
+                    <span>{{ item.task_info }}</span>
+                    <div class="rg-item-content-icon">
+                      <delete-outlined/>
+                    </div>
                   </div>
                 </label>
               </div>
@@ -54,11 +61,9 @@
                       <div ref="show-other" class="fs-other">
                         <input class="fs-other" type="text" name="notes" id="nt-notes" placeholder="添加备注">
                         <input class="fs-other" type="text" name="tags" id="nt-tags" placeholder="添加标签">
-                        <label class="fs-other like-btn">
-                          <input type="datetime-local" name="date" id="nt-date" ref="nt-date"
-                                 @change="change_dt(g_index)">
-                          {{ datetime[g_index] }}
-                        </label>
+                        <a-range-picker :disabled-date="disabledDate"
+                                        :locale="zh_local" v-model:value="date_range" :bordered="false" size="small"
+                                        @change="change_dt"/>
                       </div>
                     </fieldset>
                   </div>
@@ -75,25 +80,151 @@
 <script>
 import InnerBlock from "@/components/inner-block";
 import CommonTitle from "@/components/common_title";
+import axios from "axios";
+import {message} from "ant-design-vue";
+import cookie from "@/assets/js/cookie";
+import {ref} from "vue";
+import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
+import dayjs from 'dayjs';
+import {DeleteOutlined} from '@ant-design/icons-vue';
 
 export default {
   name: "reminder_block",
-  components: {CommonTitle, InnerBlock},
+  components: {CommonTitle, InnerBlock, DeleteOutlined},
   methods: {
     add_item(dom) {
       this.$refs["show-other"][dom].classList.add('show-other')
     },
-    change_dt(dom) {
-      this.datetime[dom] = this.$refs["nt-date"][dom]?.value
+    change_dt() {
+      this.range_begin = new Date(this.date_range[0].$d).getDate()
+      this.range_end = new Date(this.date_range[1].$d).getDate()
+    },
+    reset_day(day) {
+      this.today_num = day
+    },
+    get_todo_list(query_field) {
+      this.reminder = []
+      this.to_do_num = []
+      axios.post('http://127.0.0.1:3000/api/todo/get', query_field).then(
+          (res) => {
+            let res_data = res.data
+            res_data.forEach((item) => {
+              let has = this.reminder.findIndex(o => o.group_name === item.group_name)
+              if (has === -1) {
+                this.reminder.push({
+                  group_name: item.group_name,
+                  group_id: item.group_id,
+                  list: [item]
+                })
+              } else this.reminder[has].list.push(item)
+              let range = (start, end) => new Array(end - start).fill(start).map((el, i) => start + i);
+              this.to_do_num = [...new Set(this.to_do_num.concat(range(item.time_begin, item.time_end + 1)))]
+            })
+            let theme_color_arr = ['#037EF3', '#0CB9C1', '#7552CC']
+            this.reminder.forEach((v, index) => v.theme_color = theme_color_arr[index])
+          },
+      ).catch(err => {
+        console.log(err)
+        message.error("数据获取失败")
+      });
+    },
+    update_state(item, e) {
+      let arr1 = e.path || (e.composedPath && e.composedPath());
+      let arr2 = document.querySelectorAll(".anticon-delete")
+      let contain = ((arr1.length + arr2.length) !==
+          Array.from(new Set([...arr1, ...arr2])).length);
+      let query_field = {
+        userId: cookie.getCookie("uid"),
+        taskId: item.task_id
+      }
+      let state = contain ? 'delete' : item.status === 0 ? 'done' : 'reset'
+      console.log(state);
+      axios.post('http://127.0.0.1:3000/api/todo/'.concat(state), query_field).then(
+          res => {
+            if (res.data.affectedRows === 1 && res.data.changedRows === 1) {
+              message.info("数据更新成功")
+              this.get_todo_list({
+                userId: cookie.getCookie("uid")
+              })
+            } else message.error("数据更新失败")
+          }
+      ).catch(err => {
+        console.log(err)
+        message.error("数据更新失败")
+      })
+    },
+    reset_newInfo(group) {
+      console.log(group, "group!!")
+      group.querySelectorAll('input').forEach(v => v.value = '')
+      this.date_range = ref()
+      this.range_begin = null
+      this.range_end = null
+    },
+    disabledDate: current => {
+      return current && (current < dayjs("2022-10-1").endOf('day') || current > dayjs("2022-10-8").endOf('day'));
+    },
+    add_to_db(group) {
+      document.querySelectorAll(".reminder-group").forEach(v => {
+        if (v.querySelector('.fs-other') === group) {
+          let ginfo = JSON.parse(v.dataset.ginfo)
+          let newFormdd = v.querySelector('.rg-item-content.add-item').querySelector('fieldset').querySelectorAll('input');
+          let newInfo = newFormdd[0].value
+          let b = this.range_begin
+          let e = this.range_end
+          if (!(newInfo === null || b === null || e === null || newInfo.length <= 0)) {
+            let query_field = {
+              userId: cookie.getCookie("uid"),
+              groupId: ginfo.group_id,
+              groupName: ginfo.group_name,
+              taskInfo: newInfo,
+              timeBegin: b,
+              timeEnd: e,
+            }
+            axios.post('http://127.0.0.1:3000/api/todo/add', query_field).then(
+                (res) => {
+                  let res_data = res.data
+                  console.log(res_data)
+                  if (res_data.affectedRows === 1) {
+                    message.info("成功录入数据")
+                    this.get_todo_list({
+                      userId: cookie.getCookie("uid")
+                    })
+                  }
+                },
+            ).catch(err => {
+              console.log(err)
+              message.error("数据更新失败")
+            });
+          }
+        }
+        this.reset_newInfo(group)
+      })
     }
   },
   mounted() {
+    let query_field = {
+      userId: cookie.getCookie("uid")
+    }
+    this.get_todo_list(query_field)
+
     document.addEventListener('mousedown', (e) => {
+      this.opetating_group = document.querySelector(".show-other")
+      if (this.opetating_group === null) return
       let arr1 = e.path || (e.composedPath && e.composedPath());
       let arr2 = this.$refs["add-item"];
-      let contain = (arr1.length + arr2.length) !==
-          Array.from(new Set([...arr1, ...arr2])).length;
-      if (!contain) this.$refs["show-other"].forEach(v => v.classList.remove('show-other'))
+      let arr3 = document.querySelectorAll(".ant-picker-dropdown")
+      let contain = ((arr1.length + arr2.length + arr3.length) !==
+          Array.from(new Set([...arr1, ...arr2, ...arr3])).length);
+      if (!contain) {
+        this.$refs["show-other"].forEach(v => v.classList.remove('show-other'))
+        this.add_to_db(this.opetating_group)
+      } else {
+        let group = arr1.filter(v => v.classList?.contains("reminder-group"))[0]
+        let now_show = group?.querySelector(".fs-other") || this.opetating_group
+        console.log(now_show)
+        this.$refs["show-other"].forEach(v => (v !== now_show) ? v.classList.remove('show-other') : null)
+        if (this.opetating_group !== now_show) this.add_to_db(this.opetating_group)
+      }
     })
 
     this.datetime = new Array(this.reminder.length)
@@ -101,6 +232,7 @@ export default {
   },
   data() {
     return {
+      date_range: ref(),
       moreBtn: {
         btn: true,
         content: '待办管理',
@@ -111,7 +243,7 @@ export default {
       },
       wkdays: [2, 3, 4, 5, 6, 7, 8],
       today_num: 6,
-      to_do_nun: [2, 5, 6],
+      to_do_num: [2, 5, 6],
       reminder: [
         {
           name: 'Web',
@@ -150,11 +282,15 @@ export default {
         },
       ],
       datetime: '添加时间',
+      opetating_group: null,
+      range_begin: null,
+      range_end: null,
+      zh_local: locale,
     }
   },
   computed: {
     today() {
-      return '10月7日'
+      return `10月${this.today_num}日`
     },
   },
 }
@@ -302,6 +438,8 @@ export default {
   font-size: 20px;
   font-weight: 800;
 
+  cursor: pointer;
+
   display: flex;
   justify-content: space-between;
 }
@@ -350,15 +488,32 @@ export default {
 }
 
 .rg-item-content {
+  position: relative;
   line-height: 17px;
   min-height: 17px;
   padding: 4px;
+  padding-right: 14px;
   margin: 3px;
   margin-left: 10px;
   width: 100%;
   border-bottom: 1px solid #D9D9D9;
 
   transition: .3s all cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rg-item-content > .rg-item-content-icon {
+  position: absolute;
+  right: 0;
+  bottom: 4px;
+  opacity: 0;
+  display: none;
+
+  transition: .3s all cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rg-item-content:hover > .rg-item-content-icon {
+  display: block;
+  opacity: 1;
 }
 
 .rg-item input:checked + .cus-checkbox {

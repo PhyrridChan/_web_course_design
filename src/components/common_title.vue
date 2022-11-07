@@ -1,7 +1,7 @@
 <template>
   <div class="title_block" :style="'width:' + width">
     <span class="title-content">{{ title }}</span>
-    <span :class="['title-more', btn]" v-if="moreBtn">
+    <span :class="['title-more', btn]" v-if="moreBtn" @click="$nf.not_finish()">
       <span class="more-icon" v-html="moreBtn?.icon"></span>
       {{ moreBtn?.content }}
     </span>
