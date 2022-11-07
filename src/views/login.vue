@@ -147,7 +147,6 @@ import {message} from "ant-design-vue";
 import {UserOutlined, LockOutlined, SafetyOutlined} from '@ant-design/icons-vue';
 import axios from "axios";
 import SIdentify from "@/components/identify";
-import cookie from "@/assets/js/cookie";
 
 export default {
   name: "login_page",
@@ -187,17 +186,15 @@ export default {
         passwd: values.passwd,
       }
       let code = values.code
-      console.log(this.validateCode(code))
       if (!this.validateCode(code)) {
         this.loginTable.code = ""
+        this.refreshCode()
+        return
       }
       var that = this
-      if (values) return
       axios.post('http://127.0.0.1:3000/api/user/login', query_field).then(
           (res) => {
             if (res.data.length > 0) {
-              console.log(res.data[0])
-              console.log(that)
               that.renewCookie(res.data[0], values.remember)
               that.$router.push('/mp')
             } else {
@@ -205,12 +202,12 @@ export default {
             }
           },
       ).catch(err => {
-        console.log(err)
+        console.error(err)
         message.error("登录失败")
       });
     },
     onFinishFailed: (e) => {
-      console.log(e)
+      console.error(e)
       message.warn("请正确填写信息")
     },
     randomNum(min, max) {

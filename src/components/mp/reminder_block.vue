@@ -124,7 +124,7 @@ export default {
             this.reminder.forEach((v, index) => v.theme_color = theme_color_arr[index])
           },
       ).catch(err => {
-        console.log(err)
+        console.error(err)
         message.error("数据获取失败")
       });
     },
@@ -138,7 +138,6 @@ export default {
         taskId: item.task_id
       }
       let state = contain ? 'delete' : item.status === 0 ? 'done' : 'reset'
-      console.log(state);
       axios.post('http://127.0.0.1:3000/api/todo/'.concat(state), query_field).then(
           res => {
             if (res.data.affectedRows === 1 && res.data.changedRows === 1) {
@@ -149,12 +148,11 @@ export default {
             } else message.error("数据更新失败")
           }
       ).catch(err => {
-        console.log(err)
+        console.error(err)
         message.error("数据更新失败")
       })
     },
     reset_newInfo(group) {
-      console.log(group, "group!!")
       group.querySelectorAll('input').forEach(v => v.value = '')
       this.date_range = ref()
       this.range_begin = null
@@ -192,7 +190,7 @@ export default {
                   }
                 },
             ).catch(err => {
-              console.log(err)
+              console.error(err)
               message.error("数据更新失败")
             });
           }
@@ -221,7 +219,6 @@ export default {
       } else {
         let group = arr1.filter(v => v.classList?.contains("reminder-group"))[0]
         let now_show = group?.querySelector(".fs-other") || this.opetating_group
-        console.log(now_show)
         this.$refs["show-other"].forEach(v => (v !== now_show) ? v.classList.remove('show-other') : null)
         if (this.opetating_group !== now_show) this.add_to_db(this.opetating_group)
       }

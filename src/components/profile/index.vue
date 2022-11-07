@@ -640,7 +640,6 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      console.log(from, 'from')
       vm.fromPath = from.path  //获取上一级路由的路径
     })
   },
@@ -658,7 +657,6 @@ export default {
         const x = x_dist * v.getAttribute('data-speed')
         const y = y_dist * v.getAttribute('data-speed')
         v.style.transform = v.getAttribute('data-transform') + ` translate(${x}px, ${y}px)`;
-        console.log(x, y)
       }
       if (selector.length > 0) this.$refs[father].querySelectorAll(selector).forEach(v => apply_method(v));
       else apply_method(this.$refs[father]);
@@ -671,7 +669,6 @@ export default {
       this.commonMoveHandler('page_two', '.content_decoration', x_dist, y_dist)
     },
     moveHandlerPageTwoAvatar: function (e) {
-      console.log(e);
       const c_x = this.$refs.page_two_avatar.clientWidth / 2
       const c_y = this.$refs.page_two_avatar.clientHeight / 2 - 5
       const x_dist = (e.clientX - c_x) / c_x / 3
@@ -688,7 +685,6 @@ export default {
       msg_span.innerText = msg
       msg_span.classList.add('bubble_msg')
       dom.appendChild(msg_span)
-      console.log(dom)
       setTimeout(() => msg_span.remove(), 3000)
     },
     addHair: function () {

@@ -218,8 +218,6 @@ export default {
       })
     }
 
-    console.log(this.page_size)
-
     setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
   },
   watch: {
@@ -228,7 +226,6 @@ export default {
         this.screenWidth = val
         this.timer = true
         let that = this
-        console.log(this.page_size)
         setTimeout(function () {
           that.timer = false
         }, 400)
